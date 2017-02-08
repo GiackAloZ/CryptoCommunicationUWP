@@ -108,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CryptoProvider.cs" />
+    <Compile Include="CryptoProviderMode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\CryptoCommunicationUWP.rd.xml" />
   </ItemGroup>
