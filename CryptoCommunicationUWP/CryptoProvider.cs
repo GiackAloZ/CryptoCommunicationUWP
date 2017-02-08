@@ -25,7 +25,7 @@ namespace CryptoCommunicationUWP
 			set
 			{
 				value.CopyTo(_publicKey, 0);
-				RSAParameters temp = new RSAParameters();
+				RSAParameters temp = _provider.ExportParameters(false);
 				temp.Modulus = _publicKey;
 				_provider.ImportParameters(temp);
 				_clientSetted = true;
@@ -44,18 +44,18 @@ namespace CryptoCommunicationUWP
 			_rsaPadding = padding;
 		}
 
-		public void Encrypt(byte[] data)
+		public byte[] Encrypt(byte[] data)
 		{
 			if (_mode == CryptoProviderMode.Client && !_clientSetted)
 				throw new InvalidOperationException("You cannot encrypt if you are client and you didn't set the public key");
-			data = _provider.Encrypt(data, _rsaPadding);
+			return _provider.Encrypt(data, _rsaPadding);
 		}
 
-		public void Decrypt(byte[] data)
+		public byte[] Decrypt(byte[] data)
 		{
 			if (_mode == CryptoProviderMode.Client)
 				throw new InvalidOperationException("You cannot decrypt if you are client");
-			data = _provider.Decrypt(data, _rsaPadding);
+			return _provider.Decrypt(data, _rsaPadding);
 		}
     }
 }
