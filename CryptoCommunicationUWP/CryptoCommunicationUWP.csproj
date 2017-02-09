@@ -107,6 +107,8 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AsynchronousSocketListener.cs" />
+    <Compile Include="CryptoClient.cs" />
     <Compile Include="CryptoProvider.cs" />
     <Compile Include="CryptoProviderMode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
