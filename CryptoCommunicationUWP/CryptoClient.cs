@@ -10,36 +10,26 @@ using System.Net.Sockets;
 
 namespace CryptoCommunicationUWP
 {
-	public class CryptoClient
+	public class CryptoClient : CryptoHost
 	{
-		private AsynchronousSocketListener _listener;
-		private CryptoProvider _provider;
+		private string _serverIp;
 
-		private Random _a = new Random();
-
-		private byte[] buffer;
-
-		private	byte[] _clientHello;
-		private byte[] _serverHello;
-		private byte[] _preMasterSecret;
-
-		private byte[] _sessionKey;
-
-		public CryptoClient()
+		public CryptoClient() : base(CryptoProviderMode.Client)
 		{
 			_provider = new CryptoProvider(CryptoProviderMode.Client);
 		}
 
-		public void Connect (IPEndPoint endpoint)
+		public void Connect (string ip, int port)
 		{
-			_listener = new AsynchronousSocketListener(endpoint);
-			_listener.Connect();
+			_serverIp = ip;
+			_listener = new AsynchronousSocketListenerSender(port);
 			CalculateClientHello();
-			_listener.Send(_clientHello);
-			_listener.RecieveAsync(RecievedPublicKey);
+			_listener.SendToAsync(_serverIp, _clientHello);
+			_listener.RecieveDataEvent += RecievedPublicKey;
+			_listener.StartListeningAsync(1024);
 		}
 
-		private void RecievedPublicKey(byte[] data)
+		private void RecievedPublicKey(byte[] data, string fromIp)
 		{
 			CalculatePreMasterSecret();
 
@@ -58,7 +48,9 @@ namespace CryptoCommunicationUWP
 			_provider.PublicKey = publicKey;
 			byte[] preMasterEncrypted = _provider.EncryptPublicKey(_preMasterSecret);
 
-			_listener.Send(preMasterEncrypted);
+			_preMasterSecret.CopyTo(PreMasterSecret, 0);
+
+			_listener.SendToAsync(_serverIp, preMasterEncrypted);
 
 			//TODO
 			//calculate master secret and session keys

@@ -107,10 +107,12 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AsynchronousSocketListener.cs" />
+    <Compile Include="AsynchronousSocketListenerSender.cs" />
     <Compile Include="CryptoClient.cs" />
+    <Compile Include="CryptoHost.cs" />
     <Compile Include="CryptoProvider.cs" />
     <Compile Include="CryptoProviderMode.cs" />
+    <Compile Include="CryptoServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\CryptoCommunicationUWP.rd.xml" />
   </ItemGroup>
