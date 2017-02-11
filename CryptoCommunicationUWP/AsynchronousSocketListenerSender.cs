@@ -16,7 +16,8 @@ namespace CryptoCommunicationUWP
 {
 	public class AsynchronousSocketListenerSender
 	{
-		private int _port;
+		private int _sendPort;
+		private int _receivePort;
 		private StreamSocketListener _listener;
 		private StreamSocket _sender;
 
@@ -26,20 +27,21 @@ namespace CryptoCommunicationUWP
 		public delegate void RecieveData(byte[] data, string fromIp);
 		public event RecieveData RecieveDataEvent;
 
-		public AsynchronousSocketListenerSender(int port)
+		public AsynchronousSocketListenerSender(int sendport, int receiveport)
 		{
-			_port = port;
+			_sendPort = sendport;
+			_receivePort = receiveport;
 		}
 
-		public async void StartListeningAsync(int bufferLength)
+		public async Task StartListeningAsync(int bufferLength)
 		{
 			// Create a TCP/IP socket.
 			_listener = new StreamSocketListener();
 			_bufferLength = bufferLength;
-			_listener.ConnectionReceived += ConnectionReceived;
 
 			// Bind the socket to the local endpoint and listen for incoming connections.
-			await _listener.BindServiceNameAsync(_port.ToString());
+			await _listener.BindServiceNameAsync(_receivePort.ToString());
+			_listener.ConnectionReceived += ConnectionReceived;
 
 		}
 
@@ -61,7 +63,7 @@ namespace CryptoCommunicationUWP
 		public async void SendToAsync(string ip, byte[] data)
 		{
 			_sender = new StreamSocket();
-			await _sender.ConnectAsync(new HostName(ip), _port.ToString());
+			await _sender.ConnectAsync(new HostName(ip), _sendPort.ToString());
 
 			Stream streamOut = _sender.OutputStream.AsStreamForWrite();
 			StreamWriter writer = new StreamWriter(streamOut);

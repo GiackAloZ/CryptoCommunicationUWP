@@ -33,7 +33,7 @@ namespace TestClient
         private void button_Click(object sender, RoutedEventArgs e)
         {
             _client = new CryptoClient();
-            _client.Connect("10.38.0.4", 45555);
+            _client.Connect("192.168.1.100");
         }
     }
 }

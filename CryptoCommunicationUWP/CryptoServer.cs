@@ -21,11 +21,11 @@ namespace CryptoCommunicationUWP
 			_provider = new CryptoProvider(CryptoProviderMode.Server);
 		}
 
-		public void StartListening(int port)
+		public void StartListening()
 		{
-			_listener = new AsynchronousSocketListenerSender(port);
+			_listener = new AsynchronousSocketListenerSender(CLIENT_PORT, SERVER_PORT);
 			_listener.RecieveDataEvent += RecievedRequest;
-			_listener.StartListeningAsync(1024);
+			_listener.StartListeningAsync(512);
 		}
 
 		private void RecievedRequest(byte[] data, string fromIp)

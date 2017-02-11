@@ -8,6 +8,9 @@ namespace CryptoCommunicationUWP
 {
 	public abstract class CryptoHost
 	{
+		internal const int SERVER_PORT = 7777;
+		internal const int CLIENT_PORT = 7778;
+
 		internal AsynchronousSocketListenerSender _listener;
 		internal CryptoProvider _provider;
 

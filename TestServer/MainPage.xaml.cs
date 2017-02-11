@@ -34,7 +34,7 @@ namespace TestServer
         {
             _server = new CryptoServer();
             _server.ConnectionMade += _server_ConnectionMade;
-            _server.StartListening(45555);
+            _server.StartListening();
             lstLog.Items.Add("Started listening");
         }
 
