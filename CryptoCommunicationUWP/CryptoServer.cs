@@ -21,14 +21,14 @@ namespace CryptoCommunicationUWP
 			_provider = new CryptoProvider(CryptoProviderMode.Server);
 		}
 
-		public void StartListening()
+		public async Task StartListeningAsync()
 		{
 			_listener = new AsynchronousSocketListenerSender(CLIENT_PORT, SERVER_PORT);
-			_listener.RecieveDataEvent += RecievedRequest;
-			_listener.StartListeningAsync(512);
+			_listener.RecieveDataEvent += RecievedRequestAsync;
+			await _listener.StartListeningAsync(512);
 		}
 
-		private void RecievedRequest(byte[] data, string fromIp)
+		private async void RecievedRequestAsync(byte[] data, string fromIp)
 		{
 			byte[] helloprivate = new byte[512];
 			int i;
@@ -43,7 +43,7 @@ namespace CryptoCommunicationUWP
 			}
 			_listener.SendToAsync(fromIp, helloprivate);
 			_listener.RecieveDataEvent += RecievedPreMasterSecret;
-			_listener.StartListeningAsync(1024);
+			await _listener.StartListeningAsync(1024);
 		}
 
 		private void RecievedPreMasterSecret(byte[] data, string fromIp)

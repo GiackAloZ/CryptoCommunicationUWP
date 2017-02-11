@@ -8,7 +8,8 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Button x:Name="button" Content="Connect" HorizontalAlignment="Left" Height="74" Margin="98,245,0,0" VerticalAlignment="Top" Width="162" Click="button_Click"/>
+        <Button x:Name="button" Content="Connect" HorizontalAlignment="Left" Height="74" Margin="100,228,0,0" VerticalAlignment="Top" Width="162" Click="button_Click"/>
+        <TextBox x:Name="txtPreMaster" HorizontalAlignment="Left" Height="260" Margin="100,338,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="162"/>
 
     </Grid>
 </Page>

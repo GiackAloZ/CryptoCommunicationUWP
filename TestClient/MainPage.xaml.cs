@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 using CryptoCommunicationUWP;
+using System.Threading.Tasks;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -33,7 +34,14 @@ namespace TestClient
         private void button_Click(object sender, RoutedEventArgs e)
         {
             _client = new CryptoClient();
-            _client.Connect("192.168.1.100");
+            Task t = _client.ConnectAsync("192.168.1.100");
+			PrintPreMasterSecret(t);
         }
-    }
+
+		private async void PrintPreMasterSecret(Task t)
+		{
+			await t;
+			txtPreMaster.Text = _client.PreMasterSecret[0].ToString();
+		}
+	}
 }

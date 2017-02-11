@@ -19,14 +19,14 @@ namespace CryptoCommunicationUWP
 			_provider = new CryptoProvider(CryptoProviderMode.Client);
 		}
 
-		public void Connect (string ip)
+		public async Task ConnectAsync (string ip)
 		{
 			_serverIp = ip;
 			_listener = new AsynchronousSocketListenerSender(SERVER_PORT, CLIENT_PORT);
 			CalculateClientHello();
 			_listener.SendToAsync(_serverIp, _clientHello);
 			_listener.RecieveDataEvent += RecievedPublicKey;
-			_listener.StartListeningAsync(512);
+			await _listener.StartListeningAsync(512);
 		}
 
 		private void RecievedPublicKey(byte[] data, string fromIp)
