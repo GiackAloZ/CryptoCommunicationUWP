@@ -24,8 +24,8 @@ namespace CryptoCommunicationUWP
 		private byte[] _buffer;
 		private int _bufferLength;
 
-		public delegate void RecieveData(byte[] data, string fromIp);
-		public event RecieveData RecieveDataEvent;
+		public delegate void ReceiveData(byte[] data, string fromIp);
+		public event ReceiveData ReceiveDataEvent;
 
 		public AsynchronousSocketListenerSender(int sendport, int receiveport)
 		{
@@ -36,13 +36,17 @@ namespace CryptoCommunicationUWP
 		public async Task StartListeningAsync(int bufferLength)
 		{
 			// Create a TCP/IP socket.
-			_listener = new StreamSocketListener();
+
 			_bufferLength = bufferLength;
 
-			// Bind the socket to the local endpoint and listen for incoming connections.
-			await _listener.BindServiceNameAsync(_receivePort.ToString());
-			_listener.ConnectionReceived += ConnectionReceived;
+			if (_listener == null)
+			{
+				_listener = new StreamSocketListener();
 
+				// Bind the socket to the local endpoint and listen for incoming connections.
+				_listener.ConnectionReceived += ConnectionReceived;
+				await _listener.BindServiceNameAsync(_receivePort.ToString());
+			}
 		}
 
 		private async void ConnectionReceived(StreamSocketListener sender, StreamSocketListenerConnectionReceivedEventArgs args)
@@ -57,7 +61,7 @@ namespace CryptoCommunicationUWP
 			{
 				_buffer[i] = (byte)buff[i];
 			}
-			RecieveDataEvent.Invoke(_buffer, args.Socket.Information.RemoteAddress.CanonicalName);
+			ReceiveDataEvent?.Invoke(_buffer, args.Socket.Information.RemoteAddress.CanonicalName);
 		}
 
 		public async void SendToAsync(string ip, byte[] data)

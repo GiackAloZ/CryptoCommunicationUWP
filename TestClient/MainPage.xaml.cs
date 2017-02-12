@@ -34,14 +34,16 @@ namespace TestClient
         private void button_Click(object sender, RoutedEventArgs e)
         {
             _client = new CryptoClient();
-            Task t = _client.ConnectAsync("192.168.1.100");
-			PrintPreMasterSecret(t);
+			_client.ConnectionMade += _client_ConnectionMade;
+            Task t = _client.ConnectAsync("192.168.1.4");
         }
 
-		private async void PrintPreMasterSecret(Task t)
+		private void _client_ConnectionMade(object sender)
 		{
-			await t;
-			txtPreMaster.Text = _client.PreMasterSecret[0].ToString();
+			IAsyncAction t = Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+			{
+				txtPreMaster.Text += string.Format("WithPreMasterSecret {0}", string.Join(" , ", _client.MasterSecret));
+			});
 		}
 	}
 }

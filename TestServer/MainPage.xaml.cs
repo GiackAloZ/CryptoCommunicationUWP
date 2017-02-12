@@ -43,7 +43,7 @@ namespace TestServer
 		private async void PrintMasterSecret(Task t)
 		{
 			await t;
-			lstLog.Items.Add(string.Format("WithPreMasterSecret {0}", _server.PreMasterSecret));
+			lstLog.Items.Add(string.Format("With PreMasterSecret = {0}", _server.PreMasterSecret));
 		}
 
 		private void _server_ConnectionMade(object sender, string ipAddress)

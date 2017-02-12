@@ -14,6 +14,11 @@ namespace CryptoCommunicationUWP
 	{
 		private string _serverIp;
 
+		public bool IsReady { get; private set; }
+
+		public delegate void ConnectionMadeArgs(object sender);
+		public event ConnectionMadeArgs ConnectionMade;
+
 		public CryptoClient() : base(CryptoProviderMode.Client)
 		{
 			_provider = new CryptoProvider(CryptoProviderMode.Client);
@@ -23,13 +28,13 @@ namespace CryptoCommunicationUWP
 		{
 			_serverIp = ip;
 			_listener = new AsynchronousSocketListenerSender(SERVER_PORT, CLIENT_PORT);
+			_listener.ReceiveDataEvent += ReceivedPublicKey;
 			CalculateClientHello();
 			_listener.SendToAsync(_serverIp, _clientHello);
-			_listener.RecieveDataEvent += RecievedPublicKey;
 			await _listener.StartListeningAsync(512);
 		}
 
-		private void RecievedPublicKey(byte[] data, string fromIp)
+		private void ReceivedPublicKey(byte[] data, string fromIp)
 		{
 			CalculatePreMasterSecret();
 
@@ -48,12 +53,31 @@ namespace CryptoCommunicationUWP
 			_provider.PublicKey = publicKey;
 			byte[] preMasterEncrypted = _provider.EncryptPublicKey(_preMasterSecret);
 
+			PreMasterSecret = new byte[64];
 			_preMasterSecret.CopyTo(PreMasterSecret, 0);
 
 			_listener.SendToAsync(_serverIp, preMasterEncrypted);
 
 			//TODO
 			//calculate master secret and session keys
+
+			byte[] hashingBuffer = new byte[576];
+			for (i = 0; i < 64; i++)
+				hashingBuffer[i] = PreMasterSecret[i];
+			for (int j = 0; i < (256 + 64); i++, j++)
+				hashingBuffer[i] = _clientHello[j];
+			for (int z = 0; i < (256 + 256 + 64); i++, z++)
+				hashingBuffer[i] = _serverHello[z];
+
+			MasterSecret = _provider.HashBuffer(hashingBuffer);
+
+			Ready();
+		}
+
+		private void Ready()
+		{
+			IsReady = true;
+			ConnectionMade?.Invoke(this);
 		}
 
 		private void CalculateClientHello()
@@ -64,6 +88,12 @@ namespace CryptoCommunicationUWP
 		private void CalculatePreMasterSecret()
 		{
 			_a.NextBytes(_preMasterSecret);
+		}
+
+		public void SendByteArray(byte[] data)
+		{
+			//Encrypt data with MasterSecret
+			_listener.SendToAsync(_serverIp, data);
 		}
 	}
 }

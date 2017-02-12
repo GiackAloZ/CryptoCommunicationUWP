@@ -37,18 +37,20 @@ namespace TestServerWinIoT
 			_server.ConnectionMade += _server_ConnectionMade;
 			Task t = _server.StartListeningAsync();
 			lstLog.Items.Add("Started listening");
-			PrintMasterSecret(t);
-		}
-
-		private async void PrintMasterSecret(Task t)
-		{
-			await t;
-			lstLog.Items.Add(string.Format("WithPreMasterSecret {0}", _server.PreMasterSecret));
 		}
 
 		private void _server_ConnectionMade(object sender, string ipAddress)
 		{
+			IAsyncAction t = Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+			{
+				UpdateLog(ipAddress);
+			});
+		}
+
+		private void UpdateLog(string ipAddress)
+		{
 			lstLog.Items.Add(string.Format("Connected IP {0}", ipAddress));
+			lstLog.Items.Add(string.Format("WithPreMasterSecret {0}", string.Join(" , ", _server.MasterSecret)));
 		}
 	}
 }

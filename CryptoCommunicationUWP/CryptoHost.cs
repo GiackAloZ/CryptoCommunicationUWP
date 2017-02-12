@@ -20,11 +20,13 @@ namespace CryptoCommunicationUWP
 
 		internal byte[] _clientHello = new byte[256];
 		internal byte[] _serverHello = new byte[256];
-		internal byte[] _preMasterSecret = new byte[256];
+		internal byte[] _preMasterSecret = new byte[64];
 
 		internal byte[] _sessionKey;
 
 		public byte[] PreMasterSecret { get; set; }
+
+		public byte[] MasterSecret { get; set; }
 
 		public CryptoProviderMode Mode { get; }
 

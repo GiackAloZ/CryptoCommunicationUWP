@@ -2,7 +2,8 @@
   "dependencies": {
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
     "System.Security.Cryptography.Algorithms": "4.2.0",
-    "System.Security.Cryptography.Cng": "4.2.0"
+    "System.Security.Cryptography.Cng": "4.2.0",
+    "System.Security.Cryptography.Primitives": "4.0.0"
   },
   "frameworks": {
     "uap10.0": {}

@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System.Security.Cryptography;
+using Windows.Security.Cryptography.Core;
+using Windows.Storage.Streams;
+using Windows.Security.Cryptography;
 
 namespace CryptoCommunicationUWP
 {
@@ -58,6 +61,24 @@ namespace CryptoCommunicationUWP
 			if (_mode == CryptoProviderMode.Client)
 				throw new InvalidOperationException("You cannot decrypt if you are client");
 			return _provider.Decrypt(data, _rsaPadding);
+		}
+
+		public byte[] HashBuffer(byte[] data)
+		{
+			byte[] res = new byte[data.Length];
+			data.CopyTo(res, 0);
+			HashAlgorithmProvider alg = HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Sha512);
+			IBuffer buff = CryptographicBuffer.CreateFromByteArray(res);
+			buff = alg.HashData(buff);
+			CryptographicBuffer.CopyToByteArray(buff, out res);
+			return res;
+		}
+
+		public byte[] EncryptSymmetrically(byte[] data, byte[] key)
+		{
+			byte[] res = new byte[data.Length];
+			data.CopyTo(res, 0);
+			Aes alg;
 		}
 	}
 }
