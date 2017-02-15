@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Navigation;
 
 using CryptoCommunicationUWP;
 using System.Threading.Tasks;
+using System.Text;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -40,10 +41,7 @@ namespace TestClient
 
 		private void _client_ConnectionMade(object sender)
 		{
-			IAsyncAction t = Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-			{
-				txtPreMaster.Text += string.Format("WithPreMasterSecret {0}", string.Join(" , ", _client.MasterSecret));
-			});
-		}
+            _client.SendByteArray(Encoding.ASCII.GetBytes("ciao bello"));
+        }
 	}
 }

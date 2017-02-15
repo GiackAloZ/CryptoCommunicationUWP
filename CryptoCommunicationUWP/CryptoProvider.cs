@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System.Security.Cryptography;
+using Windows.Security.Cryptography;
 using Windows.Security.Cryptography.Core;
 using Windows.Storage.Streams;
-using Windows.Security.Cryptography;
 
 namespace CryptoCommunicationUWP
 {
@@ -78,7 +78,32 @@ namespace CryptoCommunicationUWP
 		{
 			byte[] res = new byte[data.Length];
 			data.CopyTo(res, 0);
-			Aes alg;
+
+            SymmetricKeyAlgorithmProvider AES = SymmetricKeyAlgorithmProvider.OpenAlgorithm(SymmetricAlgorithmNames.AesEcbPkcs7);
+            CryptographicKey cryKey = AES.CreateSymmetricKey(CryptographicBuffer.CreateFromByteArray(key));
+            IBuffer buffData = CryptographicBuffer.CreateFromByteArray(res);
+
+            IBuffer crypted = CryptographicEngine.Encrypt(cryKey, buffData, null);
+
+            CryptographicBuffer.CopyToByteArray(crypted, out res);
+
+            return res;
 		}
-	}
+
+        public byte[] DecryptSymmetrically(byte[] data, byte[] key)
+        {
+            byte[] res = new byte[data.Length];
+            data.CopyTo(res, 0);
+
+            SymmetricKeyAlgorithmProvider AES = SymmetricKeyAlgorithmProvider.OpenAlgorithm(SymmetricAlgorithmNames.AesEcbPkcs7);
+            CryptographicKey cryKey = AES.CreateSymmetricKey(CryptographicBuffer.CreateFromByteArray(key));
+            IBuffer buffData = CryptographicBuffer.CreateFromByteArray(res);
+
+            IBuffer encrypted = CryptographicEngine.Decrypt(cryKey, buffData, null);
+
+            CryptographicBuffer.CopyToByteArray(encrypted, out res);
+
+            return res;
+        }
+    }
 }

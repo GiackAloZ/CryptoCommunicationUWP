@@ -58,9 +58,6 @@ namespace CryptoCommunicationUWP
 
 			_listener.SendToAsync(_serverIp, preMasterEncrypted);
 
-			//TODO
-			//calculate master secret and session keys
-
 			byte[] hashingBuffer = new byte[576];
 			for (i = 0; i < 64; i++)
 				hashingBuffer[i] = PreMasterSecret[i];
@@ -92,7 +89,7 @@ namespace CryptoCommunicationUWP
 
 		public void SendByteArray(byte[] data)
 		{
-			//Encrypt data with MasterSecret
+            data = _provider.EncryptSymmetrically(data, MasterSecret);
 			_listener.SendToAsync(_serverIp, data);
 		}
 	}

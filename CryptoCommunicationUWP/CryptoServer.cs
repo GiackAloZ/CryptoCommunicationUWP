@@ -18,7 +18,7 @@ namespace CryptoCommunicationUWP
 		public delegate void ConnectionMadeArgs(object sender, string ipAddress);
 		public event ConnectionMadeArgs ConnectionMade;
 
-		public delegate void ReceivedMessageArgs(object sender, string message);
+		public delegate void ReceivedMessageArgs(object sender, string message, string ipAddress);
 		public event ReceivedMessageArgs ReceivedMessage;
 
 		public CryptoServer() : base(CryptoProviderMode.Server)
@@ -66,9 +66,6 @@ namespace CryptoCommunicationUWP
 			PreMasterSecret = new byte[64];
 			_preMasterSecret.CopyTo(PreMasterSecret, 0);
 
-			//TODO
-			//Exchange session keys
-
 			byte[] hashingBuffer = new byte[576];
 			int i;
 			for (i = 0; i < 64; i++)
@@ -89,8 +86,8 @@ namespace CryptoCommunicationUWP
 
 		private void ReceivedData(byte[] data, string fromIp)
 		{
-			//Decrypt with MasterSecret
-			ReceivedMessage?.Invoke(this, Encoding.UTF8.GetString(data));
+            data = _provider.DecryptSymmetrically(data, MasterSecret);
+			ReceivedMessage?.Invoke(this, Encoding.UTF8.GetString(data), fromIp);
 		}
 
 		private void Ready(string fromIp)

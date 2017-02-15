@@ -35,19 +35,33 @@ namespace TestServerWinIoT
 		{
 			_server = new CryptoServer();
 			_server.ConnectionMade += _server_ConnectionMade;
+            _server.ReceivedMessage += _server_ReceivedMessage;
 			Task t = _server.StartListeningAsync();
 			lstLog.Items.Add("Started listening");
 		}
 
-		private void _server_ConnectionMade(object sender, string ipAddress)
+        private void _server_ReceivedMessage(object sender, string message, string ipAddress)
+        {
+            IAsyncAction t = Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            {
+                UpdateLogReceived(message, ipAddress);
+            });
+        }
+
+        private void UpdateLogReceived(string message, string ipAddress)
+        {
+            lstLog.Items.Add(string.Format("Received : {0} from {1}", message, ipAddress));
+        }
+
+        private void _server_ConnectionMade(object sender, string ipAddress)
 		{
 			IAsyncAction t = Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
 			{
-				UpdateLog(ipAddress);
+				UpdateLogConnected(ipAddress);
 			});
 		}
 
-		private void UpdateLog(string ipAddress)
+		private void UpdateLogConnected(string ipAddress)
 		{
 			lstLog.Items.Add(string.Format("Connected IP {0}", ipAddress));
 			lstLog.Items.Add(string.Format("WithPreMasterSecret {0}", string.Join(" , ", _server.MasterSecret)));

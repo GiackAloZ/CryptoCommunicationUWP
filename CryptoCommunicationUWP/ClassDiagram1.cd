@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="CryptoCommunicationUWP.AsynchronousSocketListenerSender">
+    <Position X="0.5" Y="1.5" Width="3.25" />
+    <NestedTypes>
+      <Delegate Name="CryptoCommunicationUWP.AsynchronousSocketListenerSender.ReceiveData" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>AsynchronousSocketListenerSender.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>YAACAAEwAAACCAAAAAAAAAAABAAAAAAAAAAAAIAAAAA=</HashCode>
+      <FileName>AsynchronousSocketListenerSender.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CryptoCommunicationUWP.CryptoClient">
+    <Position X="3.75" Y="6.25" Width="2" />
+    <NestedTypes>
+      <Delegate Name="CryptoCommunicationUWP.CryptoClient.ConnectionMadeArgs" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>CryptoClient.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAACAAAEQAAAAAAAAIAgABIAACAAAAAAAAAA=</HashCode>
+      <FileName>CryptoClient.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CryptoCommunicationUWP.CryptoHost">
+    <Position X="5.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CABCAAAAAIACQAAgAEQAQABAAAAAAAAAAABQAAAAAAA=</HashCode>
+      <FileName>CryptoHost.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_listener" />
+      <Field Name="_provider" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="CryptoCommunicationUWP.CryptoProvider">
+    <Position X="9" Y="1.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAACABAAAAAAAAAAAgIAAAQAAAAAgAAIAAgAAAACBAA=</HashCode>
+      <FileName>CryptoProvider.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_mode" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="CryptoCommunicationUWP.CryptoServer">
+    <Position X="6.25" Y="6.25" Width="2" />
+    <NestedTypes>
+      <Delegate Name="CryptoCommunicationUWP.CryptoServer.ConnectionMadeArgs" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>CryptoServer.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Delegate Name="CryptoCommunicationUWP.CryptoServer.ReceivedMessageArgs" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>CryptoServer.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAAAAkQACAAAAAAAQAAAIAACAAAAAAAAAA=</HashCode>
+      <FileName>CryptoServer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="CryptoCommunicationUWP.CryptoProviderMode">
+    <Position X="10" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAQ=</HashCode>
+      <FileName>CryptoProviderMode.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
